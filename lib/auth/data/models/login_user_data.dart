@@ -5,6 +5,4 @@ class LoginUserData {
   const LoginUserData(this.login, this.password);
 
   bool get isValid => login != null && password != null;
-
-
 }

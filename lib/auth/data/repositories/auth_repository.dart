@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:small_warehouse/auth/domain/entities/user.dart';
 import 'package:small_warehouse/auth/domain/repositories/user_repository.dart';
-import 'package:small_warehouse/auth/utils/auth_exception.dart';
+import 'package:small_warehouse/common/utils/custom_exception.dart';
 import 'package:small_warehouse/common/config/path_api.dart';
 import 'package:http/http.dart' as http;
 import 'package:small_warehouse/common/utils/http_response_utils.dart';
@@ -12,6 +12,10 @@ import 'package:small_warehouse/common/utils/http_response_utils.dart';
 class AuthRepository extends UserRepository {
   static const _loginPath = '/api/User/Authorization';
   static const _registerPath = '/api/User/Registration';
+
+  final headers = {
+    'Content-type': 'application/json',
+  };
 
   final _client = http.Client();
   final _currentUserController = StreamController<User?>();
@@ -22,8 +26,8 @@ class AuthRepository extends UserRepository {
   @override
   Future<void> registerUser(User userData) async {
     final requestBody = userData.toMap();
-    final requestUri = Uri.https(Api.baseUrl, _registerPath);
-    final response = await _client.post(requestUri, body: requestBody);
+    final requestUri = Uri.http(Api.baseUrl, _registerPath);
+    final response = await _client.post(requestUri, headers: headers, body: jsonEncode(requestBody));
     _processRegisterResponse(response);
   }
 
@@ -32,9 +36,6 @@ class AuthRepository extends UserRepository {
       final params = {
         'email': email,
         'password': password,
-      };
-      final headers = {
-        'Content-type': 'application/json',
       };
       final requestUri = Uri.http(Api.baseUrl, _loginPath);
       final response = await _client.post(requestUri, headers: headers, body: jsonEncode(params));
@@ -72,6 +73,6 @@ class AuthRepository extends UserRepository {
   void _processStatusCodeFailed(http.Response response) {
     final bodyMap = HttpResponseUtils.parseHttpResponse(response);
     final parsedReason = bodyMap['message'];
-    throw AuthResponseException(parsedReason ?? response.statusCode.toString());
+    throw CustomResponseException(parsedReason ?? response.statusCode.toString());
   }
 }

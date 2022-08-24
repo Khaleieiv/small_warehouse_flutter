@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:small_warehouse/auth/presentation/state/auth_notifier.dart';
 import 'package:small_warehouse/auth/presentation/widgets/custom_background.dart';
@@ -13,18 +12,16 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  final _userDataFormKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _phoneFormatter = PhoneInputFormatter();
 
   bool get _enableRegisterButton =>
       _nameController.text.isNotEmpty &&
       _emailController.text.isNotEmpty &&
       _passwordController.text.isNotEmpty &&
-      _phoneFormatter.isFilled;
+      _phoneController.text.isNotEmpty;
 
   @override
   void initState() {
@@ -107,14 +104,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   void _registerButtonPressed() {
     final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-    if (_userDataFormKey.currentState!.validate()) {
-      authNotifier.registerAccount(
-        _nameController.text,
-        _emailController.text,
-        _passwordController.text,
-        _phoneFormatter.unmasked,
-      );
-    }
+    authNotifier.registerAccount(
+      _nameController.text,
+      _emailController.text,
+      _passwordController.text,
+      _phoneController.text,
+    );
   }
 }
 
@@ -136,6 +131,7 @@ class _GetInputs extends StatelessWidget {
       children: <Widget>[
         TextField(
           controller: nameController,
+          style: const TextStyle(color: Colors.white),
           decoration: const InputDecoration(
             enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white)),
@@ -148,6 +144,7 @@ class _GetInputs extends StatelessWidget {
         ),
         TextField(
           controller: emailController,
+          style: const TextStyle(color: Colors.white),
           decoration: const InputDecoration(
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),
@@ -161,6 +158,7 @@ class _GetInputs extends StatelessWidget {
         TextField(
           controller: passwordController,
           obscureText: true,
+          style: const TextStyle(color: Colors.white),
           decoration: const InputDecoration(
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.white),
@@ -174,6 +172,7 @@ class _GetInputs extends StatelessWidget {
         ),
         TextField(
           controller: phoneController,
+          style: const TextStyle(color: Colors.white),
           decoration: const InputDecoration(
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.white),

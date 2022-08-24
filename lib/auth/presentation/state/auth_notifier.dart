@@ -5,13 +5,15 @@ import 'package:small_warehouse/auth/data/models/login_user_data.dart';
 import 'package:small_warehouse/auth/domain/entities/user.dart';
 import 'package:small_warehouse/auth/domain/repositories/user_repository.dart';
 import 'package:small_warehouse/auth/utils/auth_credentials_storage.dart';
-import 'package:small_warehouse/auth/utils/auth_exception.dart';
+import 'package:small_warehouse/common/utils/custom_exception.dart';
 
 class AuthNotifier extends ChangeNotifier {
 
   User? _user;
 
   late StreamSubscription _userSubscription;
+
+  final UserRepository _repository;
 
   AuthNotifier(
       this._repository
@@ -21,14 +23,14 @@ class AuthNotifier extends ChangeNotifier {
 
   bool get isLoggedIn => _user != null;
 
-  var _authException = AuthException(null);
+  var _authException = CustomException(null);
 
-  AuthException get authException => _authException;
+  CustomException get authException => _authException;
 
   Future<void> registerAccount(
+      String name,
       String email,
       String password,
-      String name,
       String phone,
       ) async {
     _handleAuthError(null);
@@ -37,13 +39,12 @@ class AuthNotifier extends ChangeNotifier {
       _repository.registerUser(
           User(null, name, email,  password, phone, 0),
       );
-    } on AuthResponseException catch (e) {
+    } on CustomResponseException catch (e) {
       _handleAuthError(e);
     } finally {
       notifyListeners();
     }
   }
-  final UserRepository _repository;
 
   Future<void> signInWithEmail(
       String email,
@@ -51,12 +52,11 @@ class AuthNotifier extends ChangeNotifier {
       ) async {
     _handleAuthError(null);
     notifyListeners();
-
     try {
       _repository.loginUser(
           email, password,
       );
-    } on AuthResponseException catch (e) {
+    } on CustomResponseException catch (e) {
       _handleAuthError(e);
     } finally {
       notifyListeners();
@@ -97,10 +97,7 @@ class AuthNotifier extends ChangeNotifier {
   }
 
   void _handleAuthError(Exception? exception) {
-    if (kDebugMode) {
-      print(exception.toString());
-    }
-    _authException = AuthException(exception);
+    _authException = CustomException(exception);
   }
 
   @override

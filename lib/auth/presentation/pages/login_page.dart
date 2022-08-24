@@ -13,7 +13,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _userDataFormKey = GlobalKey<FormState>();
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -40,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                 flex: 2,
               ),
               const Header('Welcome'),
-              const Spacer(),
+              const Spacer(flex: 2,),
               Expanded(
                 flex: 3,
                 child: Align(
@@ -83,12 +82,10 @@ class _LoginPageState extends State<LoginPage> {
 
   void signInButtonPressed() {
     final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-    if (_userDataFormKey.currentState!.validate()) {
       authNotifier.signInWithEmail(
         _loginController.text,
         _passwordController.text,
       );
-    }
   }
 }
 
@@ -137,7 +134,9 @@ class _GetBottomRow extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const RegistrationPage()));
+                    builder: (context) => const RegistrationPage()
+                )
+            );
           },
           child: const Text(
             'Регистрация',
@@ -147,13 +146,6 @@ class _GetBottomRow extends StatelessWidget {
                 decoration: TextDecoration.underline),
           ),
         ),
-        const Text(
-          'Забыли пароль',
-          style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-              decoration: TextDecoration.underline),
-        )
       ],
     );
   }
