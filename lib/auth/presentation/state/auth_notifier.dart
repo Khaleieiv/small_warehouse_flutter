@@ -8,16 +8,15 @@ import 'package:small_warehouse/auth/utils/auth_credentials_storage.dart';
 import 'package:small_warehouse/common/utils/custom_exception.dart';
 
 class AuthNotifier extends ChangeNotifier {
-
   User? _user;
 
   late StreamSubscription _userSubscription;
 
-  final UserRepository _repository;
+  final UserRepository _authRepository;
 
-  AuthNotifier(
-      this._repository
-      );
+  AuthNotifier(this._authRepository) {
+    subscribeToAuthUpdates(_authRepository.currentUser);
+  }
 
   User? get currentUser => _user;
 
@@ -28,16 +27,16 @@ class AuthNotifier extends ChangeNotifier {
   CustomException get authException => _authException;
 
   Future<void> registerAccount(
-      String name,
-      String email,
-      String password,
-      String phone,
-      ) async {
+    String name,
+    String email,
+    String password,
+    String phone,
+  ) async {
     _handleAuthError(null);
     notifyListeners();
     try {
-      _repository.registerUser(
-          User(null, name, email,  password, phone, 0),
+      _authRepository.registerUser(
+        User(null, name, email, password, phone, 0),
       );
     } on CustomResponseException catch (e) {
       _handleAuthError(e);
@@ -47,14 +46,15 @@ class AuthNotifier extends ChangeNotifier {
   }
 
   Future<void> signInWithEmail(
-      String email,
-      String password,
-      ) async {
+    String email,
+    String password,
+  ) async {
     _handleAuthError(null);
     notifyListeners();
     try {
-      _repository.loginUser(
-          email, password,
+      _authRepository.loginUser(
+        email,
+        password,
       );
     } on CustomResponseException catch (e) {
       _handleAuthError(e);
@@ -79,7 +79,8 @@ class AuthNotifier extends ChangeNotifier {
     try {
       savedCredentials = await credentialsStorage.savedCredentials;
       if (savedCredentials.isValid) {
-        _repository.loginUser(savedCredentials.login!, savedCredentials.password!);
+        _authRepository.loginUser(
+            savedCredentials.login!, savedCredentials.password!);
       }
     } finally {
       notifyListeners();

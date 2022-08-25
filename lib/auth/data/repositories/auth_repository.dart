@@ -13,10 +13,6 @@ class AuthRepository extends UserRepository {
   static const _loginPath = '/api/User/Authorization';
   static const _registerPath = '/api/User/Registration';
 
-  final headers = {
-    'Content-type': 'application/json',
-  };
-
   final _client = http.Client();
   final _currentUserController = StreamController<User?>();
 
@@ -27,7 +23,7 @@ class AuthRepository extends UserRepository {
   Future<void> registerUser(User userData) async {
     final requestBody = userData.toMap();
     final requestUri = Uri.http(Api.baseUrl, _registerPath);
-    final response = await _client.post(requestUri, headers: headers, body: jsonEncode(requestBody));
+    final response = await _client.post(requestUri, headers: Api.headers, body: jsonEncode(requestBody));
     _processRegisterResponse(response);
   }
 
@@ -38,13 +34,14 @@ class AuthRepository extends UserRepository {
         'password': password,
       };
       final requestUri = Uri.http(Api.baseUrl, _loginPath);
-      final response = await _client.post(requestUri, headers: headers, body: jsonEncode(params));
+      final response = await _client.post(requestUri, headers: Api.headers, body: jsonEncode(params));
       _processLoginResponse(response);
   }
 
   void _processLoginResponse(http.Response response) {
     if (response.statusCode == HttpStatus.ok) {
       _processLoginResponseOk(response);
+
     } else {
       _processStatusCodeFailed(response);
     }

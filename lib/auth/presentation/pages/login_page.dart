@@ -4,6 +4,7 @@ import 'package:small_warehouse/auth/presentation/pages/registration_page.dart';
 import 'package:small_warehouse/auth/presentation/state/auth_notifier.dart';
 import 'package:small_warehouse/auth/presentation/widgets/custom_background.dart';
 import 'package:small_warehouse/auth/presentation/widgets/header.dart';
+import 'package:small_warehouse/common/presentation/navigation/route_names.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   bool get _enableSignInButton =>
       _loginController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  
   @override
   void initState() {
     _loginController.addListener(_inputFieldValueChangeListener);
@@ -30,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomPaint(
+        key: navigatorKey,
         painter: CustomBackgroundForLoginPage(),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35),
@@ -80,12 +84,14 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {});
   }
 
-  void signInButtonPressed() {
+  Future<void> signInButtonPressed() async {
     final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-      authNotifier.signInWithEmail(
+     await authNotifier.signInWithEmail(
         _loginController.text,
         _passwordController.text,
       );
+     if(!mounted) return;
+     Navigator.pushNamed(context, RouteNames.myAppBarPage);
   }
 }
 

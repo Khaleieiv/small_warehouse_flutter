@@ -21,10 +21,7 @@ class HomePage extends StatelessWidget {
             ),
           ),
           Spacer(),
-          Expanded(
-            flex: 3,
-            child: PrefetchImageDemo(),
-          ),
+          PrefetchImageDemo(),
           Spacer(),
           Padding(
             padding: EdgeInsets.all(15.0),
@@ -72,20 +69,20 @@ class _PrefetchImageDemoState extends State<PrefetchImageDemo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CarouselSlider.builder(
-        itemCount: images.length,
-        options: CarouselOptions(
-          autoPlay: true,
-          aspectRatio: 2.0,
-          enlargeCenterPage: true,
+    return SizedBox(
+        child: CarouselSlider.builder(
+          itemCount: images.length,
+          options: CarouselOptions(
+            autoPlay: true,
+            aspectRatio: 2.0,
+            enlargeCenterPage: true,
+          ),
+          itemBuilder: (context, index, realIdx) {
+            return Center(
+              child: Image.asset(images[index], fit: BoxFit.cover,),
+            );
+          },
         ),
-        itemBuilder: (context, index, realIdx) {
-          return Center(
-            child: Image.asset(images[index], fit: BoxFit.cover, width: 1000),
-          );
-        },
-      ),
     );
   }
 }

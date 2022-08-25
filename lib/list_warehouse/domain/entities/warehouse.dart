@@ -1,11 +1,11 @@
 class Warehouse {
-  final int? userWarehouse;
+  final int? numWarehouse;
   final int size;
   final int price;
   final int humidity;
   final String description;
 
-  Warehouse(this.userWarehouse, this.size, this.price, this.humidity,
+  Warehouse(this.numWarehouse, this.size, this.price, this.humidity,
       this.description);
 
   factory Warehouse.fromJson(Map<String, dynamic> json) {

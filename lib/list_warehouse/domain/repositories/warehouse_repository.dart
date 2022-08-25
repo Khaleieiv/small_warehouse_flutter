@@ -1,6 +1,10 @@
+import 'package:small_warehouse/list_warehouse/domain/entities/warehouse.dart';
+
 abstract class WarehouseRepository {
+  Stream<List<Warehouse>> get warehousesStream;
+
   void humidityWarehouse(
-    String humidityStart,
-    String humidityEnd,
+    int humidityStart,
+    int humidityEnd,
   );
 }
