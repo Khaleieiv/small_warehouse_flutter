@@ -1,3 +1,4 @@
+import 'package:ez_localization/ez_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:small_warehouse/common/widgets/row_for_text_and_drop_down.dart';
@@ -14,7 +15,7 @@ class ListWarehousePage extends StatefulWidget {
 class _ListWarehousePageState extends State<ListWarehousePage> {
   @override
   Widget build(BuildContext context) {
-    const label = 'Select type things -';
+    final label = context.getString('list_warehouse.label');
     Widget dropdownItem = _DropdownItemState();
     final notifier = context.watch<WarehouseNotifier>();
     final warehouses = notifier.warehouseList;
@@ -27,9 +28,9 @@ class _ListWarehousePageState extends State<ListWarehousePage> {
             dropdownItem,
           ),
           const Spacer(),
-          const Text(
-            'List of Warehouses',
-            style: TextStyle(
+          Text(
+            context.getString('list_warehouse.list_warehouse'),
+            style: const TextStyle(
               fontSize: 20,
             ),
           ),
@@ -96,15 +97,15 @@ class _ListWarehouseForBuilder extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text('Price: $priceWarehouse'),
+                    Text('${context.getString('list_warehouse.price')}  $priceWarehouse'),
                     const Spacer(),
-                    Text('Size: $sizeWarehouse'),
+                    Text('${context.getString('list_warehouse.size')}  $sizeWarehouse'),
                     const Spacer(),
-                    Text('Humidity: $humidityWarehouse'),
+                    Text('${context.getString('list_warehouse.humidity')}  $humidityWarehouse'),
                     const Spacer(),
                   ],
                 ),
-                Text('Description: $descriptionWarehouse'),
+                Text('${context.getString('list_warehouse.description')}  $descriptionWarehouse'),
               ],
             ),
           ),
@@ -125,8 +126,11 @@ class _DropdownItemStateState extends State<_DropdownItemState> {
   @override
   Widget build(BuildContext context) {
     List<DropdownMenuItem<MyDropDownList>> menuItems =
-    WarehouseNotifier.warehouses.map((item){
-      return DropdownMenuItem(value: item, child: Text(item.name),);
+        WarehouseNotifier.warehouses.map((item) {
+      return DropdownMenuItem(
+        value: item,
+        child: Text(item.name),
+      );
     }).toList();
 
     return Form(

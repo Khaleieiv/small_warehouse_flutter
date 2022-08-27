@@ -3,10 +3,12 @@ import 'package:small_warehouse/auth/domain/entities/user.dart';
 abstract class UserRepository {
   Stream<User?> get currentUser;
 
-  void registerUser(User userData);
+  Future<void> registerUser(User userData);
 
-  void loginUser(
+  Future<void> loginUser(
     String email,
     String password,
   );
+
+  Future<void> updateProfile(User userData);
 }

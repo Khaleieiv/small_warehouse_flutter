@@ -17,6 +17,10 @@ class NumWarehouseNotifier extends ChangeNotifier {
     );
   }
 
+  NumWarehouses? _warehouses;
+
+  NumWarehouses? get currentWarehouses => _warehouses;
+
   List<NumWarehouses>? warehouseList;
 
   late StreamSubscription _numWarehousesSubscription;
@@ -30,6 +34,50 @@ class NumWarehouseNotifier extends ChangeNotifier {
     notifyListeners();
     try {
       _repository.getWarehouses();
+    } on CustomResponseException catch (e) {
+      _handleCustomError(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<void> getWarehouseOnId(int id) async {
+    _handleCustomError(null);
+    notifyListeners();
+    try {
+      final dataWarehouse = await _repository.getWarehouseOnId(id);
+      _warehouses = dataWarehouse;
+    } on CustomResponseException catch (e) {
+      _handleCustomError(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<void> updateWarehouse(
+    int warehouseId,
+    int size,
+    int price,
+    int humiditySensorId,
+    String description,
+    int containerStorageId,
+    int isRented,
+    int id,
+  ) async {
+    _handleCustomError(null);
+    notifyListeners();
+    try {
+      await _repository.updateWarehouse(
+          NumWarehouses(
+            warehouseId,
+            size,
+            price,
+            humiditySensorId,
+            description,
+            containerStorageId,
+            isRented,
+          ),
+          id);
     } on CustomResponseException catch (e) {
       _handleCustomError(e);
     } finally {

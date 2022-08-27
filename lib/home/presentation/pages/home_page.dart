@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:ez_localization/ez_localization.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -9,31 +10,32 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
-          Spacer(),
-          Text(
-            'Welcome to SmallWarehouse!',
-            style: TextStyle(
-              letterSpacing: 1,
-              fontStyle: FontStyle.italic,
-              fontSize: 25,
-              color: Colors.black,
+        children: [
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(context.getString('home.label'),
+              style: const TextStyle(
+                letterSpacing: 1,
+                fontStyle: FontStyle.italic,
+                fontSize: 25,
+                color: Colors.black,
+              ),
             ),
           ),
-          Spacer(),
-          PrefetchImageDemo(),
-          Spacer(),
+          const Spacer(),
+          const PrefetchImageDemo(),
+          const Spacer(),
           Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Text(
-              'Our warehouses are rented for storage of personal belongings and for storage of various cargoes and goods. Families keep strollers, seasonal items and old furniture. Summer residents often rent a storage container for lawn mowers and greenhouses, and athletes store motorcycles, bicycles and boats in the winter. Large containers are rented for furniture, household appliances and cargo: goods for sale in online stores, pallets, building materials and everything for repair.',
-              style: TextStyle(
+            padding: const EdgeInsets.all(15.0),
+            child: Text( context.getString('home.text'),
+              style: const TextStyle(
                 fontSize: 18,
                 color: Colors.black38,
               ),
             ),
           ),
-          Spacer(),
+          const Spacer(),
         ],
       ),
     );

@@ -12,8 +12,10 @@ import 'package:small_warehouse/common/utils/http_response_utils.dart';
 class AuthRepository extends UserRepository {
   static const _loginPath = '/api/User/Authorization';
   static const _registerPath = '/api/User/Registration';
+  static const _updateUserPath = '/api/User';
 
   final _client = http.Client();
+
   final _currentUserController = StreamController<User?>();
 
   @override
@@ -38,10 +40,26 @@ class AuthRepository extends UserRepository {
       _processLoginResponse(response);
   }
 
+  @override
+  Future<void> updateProfile(User userData) async {
+    final requestBody = userData.toMap();
+    final id = userData.userId;
+    final path = '$_updateUserPath/$id';
+    final requestUri = Uri.http(Api.baseUrl, path);
+    final response = await _client.put(requestUri, headers: Api.headers, body: jsonEncode(requestBody));
+    _processUpdateProfileResponse(response);
+    loginUser(userData.email, userData.password);
+  }
+
+  void _processUpdateProfileResponse(http.Response response) {
+    if (response.statusCode != HttpStatus.ok) {
+      _processStatusCodeFailed(response);
+    }
+  }
+
   void _processLoginResponse(http.Response response) {
     if (response.statusCode == HttpStatus.ok) {
       _processLoginResponseOk(response);
-
     } else {
       _processStatusCodeFailed(response);
     }

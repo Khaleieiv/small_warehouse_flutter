@@ -1,8 +1,10 @@
+import 'package:ez_localization/ez_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:small_warehouse/auth/presentation/state/auth_notifier.dart';
 import 'package:small_warehouse/auth/presentation/widgets/custom_background.dart';
 import 'package:small_warehouse/auth/presentation/widgets/header.dart';
+import 'package:small_warehouse/common/config/localization.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -56,7 +58,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               child: Column(
                 children: <Widget>[
                   const Spacer(),
-                  const Header('Регистрация аккаунта'),
+                  Header(context.getString('auth.account_registration')),
                   Expanded(
                     flex: 3,
                     child: Center(
@@ -69,9 +71,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text(
-                        'Регистрация',
-                        style: TextStyle(
+                      Text(context.getString('auth.registration'),
+                        style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.w500,
                             color: Colors.white),
@@ -132,11 +133,11 @@ class _GetInputs extends StatelessWidget {
         TextField(
           controller: nameController,
           style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            enabledBorder: UnderlineInputBorder(
+          decoration: InputDecoration(
+            enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white)),
-            labelText: 'Имя',
-            labelStyle: TextStyle(color: Colors.white),
+            labelText: context.getString('auth.name'),
+            labelStyle: const TextStyle(color: Colors.white),
           ),
         ),
         const SizedBox(
@@ -145,12 +146,12 @@ class _GetInputs extends StatelessWidget {
         TextField(
           controller: emailController,
           style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-              enabledBorder: UnderlineInputBorder(
+          decoration: InputDecoration(
+              enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white),
               ),
-              labelText: 'E-mail',
-              labelStyle: TextStyle(color: Colors.white)),
+              labelText: context.getString('auth.email'),
+              labelStyle: const TextStyle(color: Colors.white)),
         ),
         const SizedBox(
           height: 15,
@@ -159,12 +160,12 @@ class _GetInputs extends StatelessWidget {
           controller: passwordController,
           obscureText: true,
           style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            enabledBorder: UnderlineInputBorder(
+          decoration: InputDecoration(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.white),
             ),
-            labelText: 'Пароль',
-            labelStyle: TextStyle(color: Colors.white),
+            labelText: context.getString('auth.password'),
+            labelStyle: const TextStyle(color: Colors.white),
           ),
         ),
         const SizedBox(
@@ -173,12 +174,12 @@ class _GetInputs extends StatelessWidget {
         TextField(
           controller: phoneController,
           style: const TextStyle(color: Colors.white),
-          decoration: const InputDecoration(
-            enabledBorder: UnderlineInputBorder(
+          decoration: InputDecoration(
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.white),
             ),
-            labelText: 'Phone',
-            labelStyle: TextStyle(color: Colors.white),
+            labelText: context.getString('auth.phone'),
+            labelStyle: const TextStyle(color: Colors.white),
           ),
         ),
         const SizedBox(
@@ -194,22 +195,31 @@ class _GetBottomRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale nextLocale = Localization.getNextLocale(context)!;
     return Expanded(
       flex: 1,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           GestureDetector(
             onTap: () {
               Navigator.pop(context);
             },
-            child: const Text(
-              'Вход',
-              style: TextStyle(
+            child: Text(
+              context.getString('auth.login'),
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                   decoration: TextDecoration.underline),
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.language),
+            color: Colors.tealAccent,
+            onPressed: () {
+              EzLocalizationBuilder.of(context)!.changeLocale(nextLocale);
+            },
           ),
         ],
       ),

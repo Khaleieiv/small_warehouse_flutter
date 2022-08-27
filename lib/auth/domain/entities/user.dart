@@ -6,8 +6,14 @@ class User {
   final String phone;
   final int roleId;
 
-  User(this.userId, this.name, this.email, this.password, this.phone,
-      this.roleId);
+  User(
+    this.userId,
+    this.name,
+    this.email,
+    this.password,
+    this.phone,
+    this.roleId,
+  );
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -26,7 +32,6 @@ class User {
       _JsonFields.email: email,
       _JsonFields.password: password,
       _JsonFields.phone: phone,
-
     };
   }
 }

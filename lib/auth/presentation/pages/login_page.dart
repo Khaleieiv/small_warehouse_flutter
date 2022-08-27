@@ -1,9 +1,11 @@
+import 'package:ez_localization/ez_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:small_warehouse/auth/presentation/pages/registration_page.dart';
 import 'package:small_warehouse/auth/presentation/state/auth_notifier.dart';
 import 'package:small_warehouse/auth/presentation/widgets/custom_background.dart';
 import 'package:small_warehouse/auth/presentation/widgets/header.dart';
+import 'package:small_warehouse/common/config/localization.dart';
 import 'package:small_warehouse/common/presentation/navigation/route_names.dart';
 
 class LoginPage extends StatefulWidget {
@@ -21,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
       _loginController.text.isNotEmpty && _passwordController.text.isNotEmpty;
 
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  
+
   @override
   void initState() {
     _loginController.addListener(_inputFieldValueChangeListener);
@@ -40,10 +42,14 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             children: <Widget>[
               const Spacer(
+                flex: 3,
+              ),
+              Header(
+                context.getString('auth.welcome'),
+              ),
+              const Spacer(
                 flex: 2,
               ),
-              const Header('Welcome'),
-              const Spacer(flex: 2,),
               Expanded(
                 flex: 3,
                 child: Align(
@@ -56,9 +62,10 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text(
-                    'Вход',
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+                  Text(
+                    context.getString('auth.login'),
+                    style: const TextStyle(
+                        fontSize: 25, fontWeight: FontWeight.w500),
                   ),
                   FloatingActionButton(
                     backgroundColor: Colors.grey.shade800,
@@ -86,12 +93,12 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> signInButtonPressed() async {
     final authNotifier = Provider.of<AuthNotifier>(context, listen: false);
-     await authNotifier.signInWithEmail(
-        _loginController.text,
-        _passwordController.text,
-      );
-     if(!mounted) return;
-     Navigator.pushNamed(context, RouteNames.myAppBarPage);
+    await authNotifier.signInWithEmail(
+      _loginController.text,
+      _passwordController.text,
+    );
+    if (!mounted) return;
+    Navigator.pushNamed(context, RouteNames.myAppBarPage);
   }
 }
 
@@ -109,7 +116,9 @@ class _GetInputs extends StatelessWidget {
       children: <Widget>[
         TextField(
           controller: loginController,
-          decoration: const InputDecoration(labelText: 'Логин'),
+          decoration: InputDecoration(
+            labelText: context.getString('auth.email'),
+          ),
         ),
         const SizedBox(
           height: 15,
@@ -117,7 +126,9 @@ class _GetInputs extends StatelessWidget {
         TextField(
           controller: passwordController,
           obscureText: true,
-          decoration: const InputDecoration(labelText: 'Пароль'),
+          decoration: InputDecoration(
+            labelText: context.getString('auth.password'),
+          ),
         ),
         const SizedBox(
           height: 15,
@@ -132,6 +143,7 @@ class _GetBottomRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Locale nextLocale = Localization.getNextLocale(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -140,17 +152,22 @@ class _GetBottomRow extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const RegistrationPage()
-                )
-            );
+                    builder: (context) => const RegistrationPage()));
           },
-          child: const Text(
-            'Регистрация',
-            style: TextStyle(
+          child: Text(
+            context.getString('auth.registration'),
+            style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
                 decoration: TextDecoration.underline),
           ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.language),
+          color: Colors.tealAccent,
+          onPressed: () {
+            EzLocalizationBuilder.of(context)!.changeLocale(nextLocale);
+          },
         ),
       ],
     );

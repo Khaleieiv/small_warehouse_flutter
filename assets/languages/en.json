@@ -1,0 +1,64 @@
+{
+  "auth": {
+    "welcome": "Welcome",
+    "login": "Login",
+    "email": "Email",
+    "name": "Name",
+    "password": "Password",
+    "phone": "Phone",
+    "registration": "Registration",
+    "account_registration": "Account registration"
+  },
+  "home": {
+    "label": "Welcome to SmallWarehouse!",
+    "text": "Our warehouses are rented for storage of personal belongings and for storage of various cargoes and goods. Families keep strollers, seasonal items and old furniture. Summer residents often rent a storage container for lawn mowers and greenhouses, and athletes store motorcycles, bicycles and boats in the winter. Large containers are rented for furniture, household appliances and cargo: goods for sale in online stores, pallets, building materials and everything for repair."
+  },
+  "list_warehouse": {
+    "label": "Select type things -",
+    "list_warehouse": "List of Warehouses",
+    "price": "Price:",
+    "size": "Size:",
+    "humidity": "Humidity:",
+    "description": "Description:"
+  },
+  "rent": {
+    "label": "Select number warehouse -",
+    "text": "Rent warehouse for things!",
+    "press_button_rent": "Press on button for rent -",
+    "message": {
+      "error": {
+        "error": "Error!",
+        "not_selected_warehouse": "You have not selected a number warehouse!",
+        "not_selected_date": "You have not selected a date!"
+      },
+      "successful": {
+        "rent": "You rent warehouse!!!"
+      }
+    }
+  },
+  "my_bottom_app_bar": {
+    "home": "Home",
+    "warehouse": "Warehouses",
+    "rent": "Rent",
+    "profile": "Profile",
+    "localization": "Localization"
+  },
+  "profile": {
+    "label": {
+      "profile": "Profile",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "phone": "Phone",
+      "button_pressed_update_profile": "Update your profile"
+    },
+    "message": {
+      "error": {
+        "not_update_profile": "You have not update!"
+      },
+      "successful": {
+        "update_profile": "You update profile!"
+      }
+    }
+  }
+}

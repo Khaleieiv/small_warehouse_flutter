@@ -4,5 +4,5 @@ class RouteNames {
   static const String myAppBarPage = '/myAppBar';
   static const String homePage = '/home';
   static const String rentPage = '/rent';
-  static const String settingsPage = '/settings';
+  static const String profilePage = '/profile';
 }

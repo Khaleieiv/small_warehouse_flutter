@@ -35,8 +35,15 @@ class AuthNotifier extends ChangeNotifier {
     _handleAuthError(null);
     notifyListeners();
     try {
-      _authRepository.registerUser(
-        User(null, name, email, password, phone, 0),
+     await _authRepository.registerUser(
+        User(
+          null,
+          name,
+          email,
+          password,
+          phone,
+          0,
+        ),
       );
     } on CustomResponseException catch (e) {
       _handleAuthError(e);
@@ -52,9 +59,36 @@ class AuthNotifier extends ChangeNotifier {
     _handleAuthError(null);
     notifyListeners();
     try {
-      _authRepository.loginUser(
+     await _authRepository.loginUser(
         email,
         password,
+      );
+    } on CustomResponseException catch (e) {
+      _handleAuthError(e);
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<void> updateProfile(
+      int id,
+      String name,
+      String email,
+      String password,
+      String phone,
+      ) async {
+    _handleAuthError(null);
+    notifyListeners();
+    try {
+      await _authRepository.updateProfile(
+        User(
+          id,
+          name,
+          email,
+          password,
+          phone,
+          0,
+        ),
       );
     } on CustomResponseException catch (e) {
       _handleAuthError(e);
@@ -89,7 +123,7 @@ class AuthNotifier extends ChangeNotifier {
 
   Future<void> _userStreamListener(User? user) async {
     _user = user;
-    if (user != null) {
+    if (user!= null) {
       _handleAuthError(null);
       const AuthCredentialsStorage()
           .saveCredentials(LoginUserData(user.email, user.password));

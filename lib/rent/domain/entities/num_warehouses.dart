@@ -28,6 +28,18 @@ class NumWarehouses {
       json[_JsonFields.isRented],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      _JsonFields.id: warehouseId,
+      _JsonFields.size: size,
+      _JsonFields.price: price,
+      _JsonFields.humiditySensorId: humiditySensorId,
+      _JsonFields.description: description,
+      _JsonFields.containerStorageId: containerStorageId,
+      _JsonFields.isRented: isRented,
+    };
+  }
 }
 
 class _JsonFields {
